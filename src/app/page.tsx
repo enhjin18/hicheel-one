@@ -1,10 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+}
+
 export default function Home() {
-  const [products, setProducts] = useState<any[]>([]);
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [favorites, setFavorites] = useState<Product[]>([]);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -15,7 +23,7 @@ export default function Home() {
     setFavorites(savedFavs);
   }, []);
 
-  const toggleFavorite = (product: any) => {
+  const toggleFavorite = (product: Product) => {
     let updatedFavs;
     if (favorites.find((item) => item.id === product.id)) {
       updatedFavs = favorites.filter((item) => item.id !== product.id);
@@ -27,8 +35,8 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: 300 }}>
-      <h1> Enhjin Store</h1>
+    <div style={{ padding: 20 }}>
+      <h1>Enhjin Store</h1>
 
       <div
         style={{
@@ -41,12 +49,12 @@ export default function Home() {
           <div
             key={p.id}
             style={{
-              background: "",
-              border: "5px solid #ddd",
+              border: "1px solid #ddd",
               padding: 10,
+              borderRadius: 8,
             }}
           >
-            <img src={p.image} alt={p.title} width="100" />
+            <Image src={p.image} alt={p.title} width={150} height={150} />
             <h3>{p.title}</h3>
             <p>${p.price}</p>
             <button onClick={() => toggleFavorite(p)}>
